@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bảng Tính Lương Tháng — HappyKids HRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <aside class="app-sidebar">
+    <div class="brand-header">
+      <div class="brand-logo-icon">
+        <i data-lucide="graduation-cap"></i>
+      </div>
+      <div class="brand-text">
+        <h2>HAPPYKIDS</h2>
+        <p>Quản Lý Nhân Sự & Công</p>
+      </div>
+    </div>
+
+    <div class="sidebar-branch-selector">
+      <label>Cơ Sở Đang Chọn</label>
+      <select id="sidebar-branch-select" class="branch-select-box">
+        <option value="1">Chi nhánh Càng Long</option>
+        <option value="2">Chi nhánh Tân Nhựt</option>
+      </select>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Nghiệp vụ chính</div>
+      <a href="index.html" class="nav-item">
+        <i data-lucide="layout-dashboard"></i>
+        <span>Tổng quan</span>
+      </a>
+      <a href="cham-cong.html" class="nav-item">
+        <i data-lucide="calendar-check"></i>
+        <span>Chấm công ma trận</span>
+      </a>
+      <a href="nhan-su.html" class="nav-item">
+        <i data-lucide="users"></i>
+        <span>Hồ sơ giáo viên</span>
+      </a>
+      <a href="tinh-luong.html" class="nav-item active">
+        <i data-lucide="calculator"></i>
+        <span>Bảng tính lương</span>
+      </a>
+
+      <div class="nav-section-title">Hệ thống</div>
+      <a href="cau-hinh.html" class="nav-item">
+        <i data-lucide="settings"></i>
+        <span>Cấu hình tham số</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <img src="https://ui-avatars.com/api/?name=Admin&background=2563EB&color=fff" alt="User Avatar" class="user-avatar">
+      <div class="user-info">
+        <div class="user-name">Đang tải...</div>
+        <div class="user-role">Quản trị viên</div>
+      </div>
+      <button class="btn-logout" id="btn-logout" title="Đăng xuất">
+        <i data-lucide="log-out"></i>
+      </button>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <header class="app-header">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="btn-toggle-sidebar" id="btn-toggle-sidebar">
+          <i data-lucide="menu"></i>
+        </button>
+        <div class="header-title-box">
+          <h1 id="page-branch-title">Bảng Tổng Hợp Tính Lương</h1>
+          <p>Tự động tổng hợp ngày công, nhân đơn giá chuẩn và trừ khấu trừ</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Nút xanh lá: Tính lại lương -->
+        <button class="btn btn-accent" id="btn-recalculate">
+          <i data-lucide="refresh-cw"></i>
+          <span>Tính Lại Lương Toàn Bộ</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <!-- BỘ LỌC KỲ LƯƠNG & TAB -->
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-body" style="padding: 16px 20px;">
+          <div class="filter-toolbar" style="margin-bottom: 0;">
+            <div class="filter-group">
+              <label class="form-label" style="margin-bottom: 0; font-size: 13px;">Kỳ tính lương:</label>
+              <select id="select-month" class="form-control" style="width: 120px; padding: 6px 12px;">
+                <option value="1">Tháng 1</option>
+                <option value="2">Tháng 2</option>
+                <option value="3">Tháng 3</option>
+                <option value="4">Tháng 4</option>
+                <option value="5">Tháng 5</option>
+                <option value="6">Tháng 6</option>
+                <option value="7">Tháng 7</option>
+                <option value="8">Tháng 8</option>
+                <option value="9">Tháng 9</option>
+                <option value="10" selected>Tháng 10</option>
+                <option value="11">Tháng 11</option>
+                <option value="12">Tháng 12</option>
+              </select>
+              <select id="select-year" class="form-control" style="width: 100px; padding: 6px 12px;">
+                <option value="2025">2025</option>
+                <option value="2026" selected>2026</option>
+                <option value="2027">2027</option>
+              </select>
+            </div>
+
+            <div class="tab-pill-group">
+              <button class="tab-pill active" id="tab-fixed">Lương Cứng</button>
+              <button class="tab-pill" id="tab-hourly">Lương Theo Giờ</button>
+            </div>
+
+            <div style="font-size: 13px; font-weight: 600; color: var(--color-secondary);" id="summary-total-cost">
+              Tổng chi lương: 0 ₫
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BẢNG TỔNG HỢP LƯƠNG -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title" id="payroll-card-title">Bảng Lương Tháng 10/2026</div>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table-clean" id="payroll-table">
+              <thead id="payroll-thead"></thead>
+              <tbody id="payroll-tbody">
+                <tr>
+                  <td colspan="15" style="text-align: center; padding: 40px; color: var(--color-text-secondary);">
+                    Đang tính toán bảng lương...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL ĐIỀU CHỈNH THƯỞNG / KHẤU TRỪ -->
+  <div class="modal-overlay" id="adjustment-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title" id="adj-emp-name">Điều Chỉnh Lương</div>
+        <button class="modal-close" onclick="closeAdjustmentModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="adjustment-form">
+          <input type="hidden" id="adj-emp-id">
+          <div class="form-group">
+            <label class="form-label">Tiền thưởng thêm (VNĐ)</label>
+            <input type="number" class="form-control" id="adj-bonus" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Khấu trừ / Phạt (VNĐ)</label>
+            <input type="number" class="form-control" id="adj-deductions" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ghi chú điều chỉnh</label>
+            <input type="text" class="form-control" id="adj-note" placeholder="Lý do thưởng, phạt đi trễ...">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeAdjustmentModal()">Đóng</button>
+        <button type="button" class="btn btn-accent" id="btn-save-adjustment">
+          <i data-lucide="check"></i> Lưu Điều Chỉnh
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/tinh-luong.js"></script>
+</body>
+</html>

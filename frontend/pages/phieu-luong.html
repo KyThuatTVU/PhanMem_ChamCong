@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phiếu Lương Cá Nhân — HappyKids HRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/print.css">
+  <style>
+    body {
+      background: var(--color-background);
+      display: flex;
+      justify-content: center;
+      padding: 30px 16px;
+    }
+    .payslip-container {
+      width: 100%;
+      max-width: 780px;
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-card);
+    }
+    .school-header {
+      text-align: center;
+      border-bottom: 2px solid var(--color-secondary);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+    .school-header h2 {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--color-secondary);
+      margin-bottom: 4px;
+    }
+    .school-header p {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+    .voucher-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-top: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 24px;
+      margin-bottom: 24px;
+      background: var(--color-surface-muted);
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+    }
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      text-align: center;
+      margin-top: 50px;
+      font-size: 13.5px;
+    }
+    .sign-title {
+      font-weight: 700;
+      color: var(--color-secondary);
+      margin-bottom: 70px;
+    }
+  </style>
+</head>
+<body>
+  <div class="payslip-container">
+    <!-- NÚT THAO TÁC (ẨN KHI IN) -->
+    <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <a href="tinh-luong.html" class="btn btn-secondary">
+        <i data-lucide="arrow-left"></i> Quay lại bảng lương
+      </a>
+      <button class="btn btn-accent" onclick="window.print()">
+        <i data-lucide="printer"></i> In Phiếu Lương (A4 / A5)
+      </button>
+    </div>
+
+    <!-- TIÊU ĐỀ TRƯỜNG -->
+    <div class="school-header">
+      <h2>TRƯỜNG MẦM NON & TRUNG TÂM PHÁT TRIỂN GIÁO DỤC HAPPYKIDS</h2>
+      <p id="slip-branch-name">Cơ sở: Chi nhánh Càng Long</p>
+      <div class="voucher-title">PHIẾU THANH TOÁN LƯƠNG</div>
+      <p style="font-weight: 600; color: var(--color-secondary); margin-top: 4px;" id="slip-month-text">Tháng 10 / 2026</p>
+    </div>
+
+    <!-- THÔNG TIN NHÂN SỰ -->
+    <div class="info-grid">
+      <div><strong>Họ và tên:</strong> <span id="slip-emp-name">...</span></div>
+      <div><strong>Mã giáo viên:</strong> <span id="slip-emp-code">...</span></div>
+      <div><strong>Chức vụ / Bộ phận:</strong> <span id="slip-emp-pos">...</span></div>
+      <div><strong>Hình thức lương:</strong> <span id="slip-emp-type">...</span></div>
+      <div><strong>Khung giờ hợp đồng:</strong> <span id="slip-emp-frame">...</span></div>
+      <div><strong>Số điện thoại:</strong> <span id="slip-emp-phone">...</span></div>
+    </div>
+
+    <!-- BẢNG CHI TIẾT LƯƠNG & PHỤ CẤP -->
+    <table class="table-clean" style="margin-bottom: 24px;">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Khoản mục chi trả & khấu trừ</th>
+          <th style="text-align: center;">Số lượng / Định mức</th>
+          <th style="text-align: right;">Thành tiền (VNĐ)</th>
+        </tr>
+      </thead>
+      <tbody id="slip-tbody">
+        <tr>
+          <td colspan="4" style="text-align: center; padding: 20px;">Đang tải chi tiết phiếu lương...</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr style="background: var(--color-surface-muted);">
+          <td colspan="3" style="font-size: 15px; font-weight: 700; text-align: right; color: var(--color-secondary);">
+            THỰC LĨNH NHẬN VỀ:
+          </td>
+          <td style="text-align: right;">
+            <strong style="font-size: 18px; color: var(--color-accent);" id="slip-net-salary">0 ₫</strong>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div style="font-size: 12.5px; color: var(--color-text-secondary); font-style: italic; margin-bottom: 20px;" id="slip-note">
+      * Mọi thắc mắc về số công hoặc phiếu lương, quý giáo viên vui lòng phản hồi phòng hành chính trong vòng 3 ngày làm việc.
+    </div>
+
+    <!-- KHỐI CHỮ KÝ -->
+    <div class="signature-grid">
+      <div>
+        <div class="sign-title">Người Lập Phiếu</div>
+        <div style="font-size: 12px; color: var(--color-text-secondary);">(Ký, họ tên)</div>
+      </div>
+      <div>
+        <div class="sign-title">Kế Toán Cơ Sở</div>
+        <div style="font-size: 12px; color: var(--color-text-secondary);">(Ký, họ tên)</div>
+      </div>
+      <div>
+        <div class="sign-title">Người Nhận Lương</div>
+        <div style="font-size: 12px; color: var(--color-text-secondary);">(Ký, họ tên)</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script>
+    utils.initIcons();
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const empId = urlParams.get('employee_id');
+      const month = urlParams.get('month') || 10;
+      const year = urlParams.get('year') || 2026;
+
+      if (!empId) {
+        alert('Thiếu tham số employee_id');
+        return;
+      }
+
+      const res = await api.get('payroll.php', {
+        action: 'payslip',
+        employee_id: empId,
+        month: month,
+        year: year
+      });
+
+      if (res.status === 'success' && res.data) {
+        renderPayslip(res.data);
+      } else {
+        document.getElementById('slip-tbody').innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--color-danger); padding: 30px;">Lỗi: ${res.message}</td></tr>`;
+      }
+    });
+
+    function renderPayslip(p) {
+      document.getElementById('slip-branch-name').textContent = `Cơ sở: ${p.branch_name || 'HappyKids'}`;
+      document.getElementById('slip-month-text').textContent = `Tháng ${p.month} / ${p.year}`;
+      document.getElementById('slip-emp-name').textContent = p.full_name;
+      document.getElementById('slip-emp-code').textContent = p.employee_code;
+      document.getElementById('slip-emp-pos').textContent = p.position || '-';
+      document.getElementById('slip-emp-type').textContent = p.salary_type === 'FIXED' ? 'Lương Cứng' : 'Lương Theo Giờ';
+      document.getElementById('slip-emp-frame').textContent = p.time_frame || '-';
+      document.getElementById('slip-emp-phone').textContent = p.phone || '-';
+
+      const tbody = document.getElementById('slip-tbody');
+      let rows = [];
+      let idx = 1;
+
+      if (p.salary_type === 'FIXED') {
+        rows.push(`
+          <tr>
+            <td>${idx++}</td>
+            <td>Lương cơ bản theo thỏa thuận hợp đồng</td>
+            <td style="text-align: center;">26 ngày chuẩn</td>
+            <td style="text-align: right;">${utils.formatCurrency(p.base_salary)}</td>
+          </tr>
+          <tr>
+            <td>${idx++}</td>
+            <td>Lương tính theo ngày công thực tế (X)</td>
+            <td style="text-align: center;"><strong>${p.total_days_x} ngày</strong></td>
+            <td style="text-align: right;"><strong>${utils.formatCurrency(p.salary_by_days)}</strong></td>
+          </tr>
+        `);
+
+        if (p.ot_pay > 0) {
+          rows.push(`
+            <tr>
+              <td>${idx++}</td>
+              <td>Tiền tăng ca ngoài giờ (${p.ot_count || 0} lần)</td>
+              <td style="text-align: center;">${p.total_ot_hours || 0} giờ</td>
+              <td style="text-align: right;">${utils.formatCurrency(p.ot_pay)}</td>
+            </tr>
+          `);
+        }
+        if (p.lunch_allowance > 0) {
+          rows.push(`
+            <tr>
+              <td>${idx++}</td>
+              <td>Phụ cấp ăn trưa theo ngày công</td>
+              <td style="text-align: center;">${p.total_days_x} ngày × 25k</td>
+              <td style="text-align: right;">${utils.formatCurrency(p.lunch_allowance)}</td>
+            </tr>
+          `);
+        }
+        if (p.attendance_allowance > 0) {
+          rows.push(`
+            <tr>
+              <td>${idx++}</td>
+              <td>Phụ cấp chuyên cần</td>
+              <td style="text-align: center;">Đạt định mức</td>
+              <td style="text-align: right;">${utils.formatCurrency(p.attendance_allowance)}</td>
+            </tr>
+          `);
+        }
+        if (p.boarding_pay > 0) {
+          rows.push(`
+            <tr>
+              <td>${idx++}</td>
+              <td>Phụ cấp Bán Trú</td>
+              <td style="text-align: center;">Theo hợp đồng</td>
+              <td style="text-align: right;">${utils.formatCurrency(p.boarding_pay)}</td>
+            </tr>
+          `);
+        }
+      } else {
+        // Lương giờ
+        rows.push(`
+          <tr>
+            <td>${idx++}</td>
+            <td>Tiền dạy ca chuyên biệt (90 phút/ca)</td>
+            <td style="text-align: center;"><strong>${p.total_slots} ca</strong></td>
+            <td style="text-align: right;"><strong>${utils.formatCurrency(p.salary_by_slots)}</strong></td>
+          </tr>
+        `);
+        if (p.boarding_pay > 0) {
+          rows.push(`
+            <tr>
+              <td>${idx++}</td>
+              <td>Phụ cấp trực Bán Trú (BT)</td>
+              <td style="text-align: center;">${p.total_boarding_days} buổi</td>
+              <td style="text-align: right;">${utils.formatCurrency(p.boarding_pay)}</td>
+            </tr>
+          `);
+        }
+      }
+
+      if (p.bonus > 0) {
+        rows.push(`
+          <tr>
+            <td>${idx++}</td>
+            <td>Tiền thưởng khen thưởng thêm</td>
+            <td style="text-align: center;">Thưởng</td>
+            <td style="text-align: right; color: var(--color-accent);">+ ${utils.formatCurrency(p.bonus)}</td>
+          </tr>
+        `);
+      }
+      if (p.deductions > 0) {
+        rows.push(`
+          <tr>
+            <td>${idx++}</td>
+            <td>Các khoản khấu trừ / phạt đi trễ (${p.late_count || 0} lần trễ, ${p.total_late_minutes || 0}p)</td>
+            <td style="text-align: center;">Khấu trừ</td>
+            <td style="text-align: right; color: var(--color-danger);">- ${utils.formatCurrency(p.deductions)}</td>
+          </tr>
+        `);
+      }
+
+      tbody.innerHTML = rows.join('');
+      document.getElementById('slip-net-salary').textContent = utils.formatCurrency(p.net_salary);
+
+      if (p.note) {
+        document.getElementById('slip-note').textContent = `* Ghi chú: ${p.note}`;
+      }
+    }
+  </script>
+</body>
+</html>

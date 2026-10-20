@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập — Hệ Thống Quản Lý Nhân Sự & Chấm Công HappyKids</title>
+  <!-- Google Fonts: Quicksand, Be Vietnam Pro, Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Identity Services (GIS) Client Library -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .login-wrapper {
+      min-height: 100vh;
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+      padding: 20px;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      box-shadow: var(--shadow-modal);
+      text-align: center;
+    }
+    .login-logo {
+      width: 60px;
+      height: 60px;
+      background: var(--color-primary);
+      color: #fff;
+      border-radius: var(--radius-lg);
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.25);
+    }
+    .login-divider {
+      display: flex;
+      align-items: center;
+      margin: 24px 0;
+      color: var(--color-text-secondary);
+      font-size: 12px;
+    }
+    .login-divider::before, .login-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--color-border);
+    }
+    .login-divider span {
+      padding: 0 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="login-logo">
+        <i data-lucide="graduation-cap" style="width: 32px; height: 32px;"></i>
+      </div>
+      <h2 style="font-size: 22px; font-weight: 700; color: var(--color-secondary); margin-bottom: 6px;">HAPPYKIDS HRM</h2>
+      <p style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 28px;">
+        Hệ thống quản lý nhân sự & chấm công<br>Chi nhánh Càng Long & Chi nhánh Tân Nhựt
+      </p>
+
+      <!-- GOOGLE IDENTITY SERVICES BUTTON CONTAINER -->
+      <div id="g_id_onload"
+           data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+           data-callback="handleCredentialResponse"
+           data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin"
+           data-type="standard"
+           data-size="large"
+           data-theme="outline"
+           data-text="sign_in_with"
+           data-shape="rectangular"
+           data-logo_alignment="left"
+           style="display: flex; justify-content: center; margin-bottom: 16px;">
+      </div>
+
+      <div class="login-divider">
+        <span>HOẶC ĐĂNG NHẬP NHANH THỬ NGHIỆM</span>
+      </div>
+
+      <button id="btn-dev-login" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px;">
+        <i data-lucide="shield-check"></i> Đăng nhập Quản Trị Viên (Dev Test)
+      </button>
+
+      <div style="margin-top: 24px; font-size: 12px; color: var(--color-text-secondary);">
+        Hệ thống hỗ trợ quản lý 2 cơ sở, tự động tính công chuẩn, chia ca 90 phút & tính lương theo hợp đồng.
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    utils.initIcons();
+
+    // Callback khi người dùng đăng nhập bằng Google thành công
+    window.handleCredentialResponse = function(response) {
+      auth.handleGoogleCallback(response);
+    };
+
+    // Nút đăng nhập thử nghiệm cục bộ
+    document.getElementById('btn-dev-login').addEventListener('click', () => {
+      auth.loginDev();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+/* ==========================================================================
+   PRINT CSS: ĐỊNH DẠNG CHUYÊN DỤNG CHO IN PHIẾU LƯƠNG & BÁO CÁO A4 / A5
+   ========================================================================== */
+
+@media print {
+  /* Ẩn toàn bộ các thành phần điều hướng, sidebar, header và nút thao tác */
+  .app-sidebar,
+  .app-header,
+  .btn,
+  .no-print,
+  .filter-toolbar,
+  .toast-container {
+    display: none !important;
+  }
+
+  body, .app-main, .app-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 12pt !important;
+  }
+
+  .payslip-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 15mm !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .table-clean {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  .table-clean th,
+  .table-clean td {
+    border: 1px solid #333 !important;
+    padding: 6px 10px !important;
+    color: #000 !important;
+  }
+
+  .table-clean th {
+    background: #f0f0f0 !important;
+    font-weight: bold !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+}

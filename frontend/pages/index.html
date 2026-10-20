@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tổng Quan — HappyKids HRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- SIDEBAR ĐIỀU HƯỚNG -->
+  <aside class="app-sidebar">
+    <div class="brand-header">
+      <div class="brand-logo-icon">
+        <i data-lucide="graduation-cap"></i>
+      </div>
+      <div class="brand-text">
+        <h2>HAPPYKIDS</h2>
+        <p>Quản Lý Nhân Sự & Công</p>
+      </div>
+    </div>
+
+    <!-- BỘ CHỌN CHI NHÁNH -->
+    <div class="sidebar-branch-selector">
+      <label>Cơ Sở Đang Chọn</label>
+      <select id="sidebar-branch-select" class="branch-select-box">
+        <option value="1">Chi nhánh Càng Long</option>
+        <option value="2">Chi nhánh Tân Nhựt</option>
+      </select>
+    </div>
+
+    <!-- MENU ĐIỀU HƯỚNG -->
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Nghiệp vụ chính</div>
+      <a href="index.html" class="nav-item active">
+        <i data-lucide="layout-dashboard"></i>
+        <span>Tổng quan</span>
+      </a>
+      <a href="cham-cong.html" class="nav-item">
+        <i data-lucide="calendar-check"></i>
+        <span>Chấm công ma trận</span>
+      </a>
+      <a href="nhan-su.html" class="nav-item">
+        <i data-lucide="users"></i>
+        <span>Hồ sơ giáo viên</span>
+      </a>
+      <a href="tinh-luong.html" class="nav-item">
+        <i data-lucide="calculator"></i>
+        <span>Bảng tính lương</span>
+      </a>
+
+      <div class="nav-section-title">Hệ thống</div>
+      <a href="cau-hinh.html" class="nav-item">
+        <i data-lucide="settings"></i>
+        <span>Cấu hình tham số</span>
+      </a>
+    </nav>
+
+    <!-- THÔNG TIN NGƯỜI DÙNG & ĐĂNG XUẤT -->
+    <div class="sidebar-user">
+      <img src="https://ui-avatars.com/api/?name=Admin&background=2563EB&color=fff" alt="User Avatar" class="user-avatar">
+      <div class="user-info">
+        <div class="user-name">Đang tải...</div>
+        <div class="user-role">Quản trị viên</div>
+      </div>
+      <button class="btn-logout" id="btn-logout" title="Đăng xuất">
+        <i data-lucide="log-out"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- NỘI DUNG CHÍNH (MAIN WRAPPER) -->
+  <main class="app-main">
+    <!-- HEADER -->
+    <header class="app-header">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="btn-toggle-sidebar" id="btn-toggle-sidebar">
+          <i data-lucide="menu"></i>
+        </button>
+        <div class="header-title-box">
+          <h1 id="page-branch-title">Chi nhánh Càng Long</h1>
+          <p id="current-date-text">Đang cập nhật...</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Nút chấm công nhanh màu xanh lá theo quy tắc 60-30-10 -->
+        <a href="cham-cong.html" class="btn btn-checkin">
+          <i data-lucide="clock"></i>
+          <span>Vào Chấm Công Ngay</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="app-content">
+      <!-- KHỐI ĐỒNG HỒ THỜI GIAN THỰC & CHÀO MỪNG -->
+      <div class="card" style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); color: #fff; border: none; margin-bottom: 24px;">
+        <div class="card-body" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+          <div>
+            <span class="badge" style="background: rgba(255,255,255,0.15); color: #fff; margin-bottom: 8px;">
+              <i data-lucide="activity" style="width: 14px; height: 14px;"></i> Hệ thống sẵn sàng
+            </span>
+            <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin-bottom: 4px;">Hệ Thống Quản Lý Giáo Viên & Tính Lương Tự Động</h2>
+            <p style="color: #94A3B8; font-size: 13.5px;">Tự động nhận diện công chuẩn hợp đồng, quy đổi 90p/ca, phụ cấp bán trú & xuất phiếu lương tức thì.</p>
+          </div>
+          <div style="text-align: right; background: rgba(255,255,255,0.06); padding: 12px 24px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.1);">
+            <div id="live-clock" style="font-size: 28px; font-weight: 700; font-family: var(--font-heading); letter-spacing: 1px;">--:--:--</div>
+            <div style="font-size: 12px; color: #94A3B8;">Giờ hệ thống chuẩn</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 THẺ THỐNG KÊ (KPI STAT CARDS) -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon primary">
+            <i data-lucide="users"></i>
+          </div>
+          <div class="stat-meta">
+            <div class="stat-label">Tổng Giáo Viên Cơ Sở</div>
+            <div class="stat-value" id="stat-total-emp">0</div>
+            <div class="stat-desc">Đang hoạt động trong danh sách</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon success">
+            <i data-lucide="award"></i>
+          </div>
+          <div class="stat-meta">
+            <div class="stat-label">Giáo Viên Lương Cứng</div>
+            <div class="stat-value" id="stat-fixed-emp">0</div>
+            <div class="stat-desc">Toàn thời gian & Bán trú cố định</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon warning">
+            <i data-lucide="timer"></i>
+          </div>
+          <div class="stat-meta">
+            <div class="stat-label">Giáo Viên Lương Giờ</div>
+            <div class="stat-value" id="stat-hourly-emp">0</div>
+            <div class="stat-desc">Dạy ca chuyên biệt (90p/ca)</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon danger">
+            <i data-lucide="file-spreadsheet"></i>
+          </div>
+          <div class="stat-meta">
+            <div class="stat-label">Công Chuẩn Áp Dụng</div>
+            <div class="stat-value" id="stat-standard-days">26</div>
+            <div class="stat-desc">Ngày công tính lương tháng</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BẢNG TỔNG QUAN DANH SÁCH GIÁO VIÊN NHANH -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Danh Sách Giáo Viên Chi Nhánh Hiện Tại</div>
+          <div class="filter-group">
+            <a href="nhan-su.html" class="btn btn-secondary btn-sm">
+              <i data-lucide="external-link"></i> Quản lý đầy đủ
+            </a>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table-clean">
+              <thead>
+                <tr>
+                  <th>Mã GV</th>
+                  <th>Họ và Tên</th>
+                  <th>Chức vụ / Bộ phận</th>
+                  <th>Số điện thoại</th>
+                  <th>Hình thức lương</th>
+                  <th>Mức lương / Đơn giá ca</th>
+                  <th>Khung giờ HĐ</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="quick-employee-tbody">
+                <tr>
+                  <td colspan="8" style="text-align: center; padding: 30px; color: var(--color-text-secondary);">
+                    Đang tải danh sách giáo viên...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chấm Công Chi Tiết & Ma Trận — HappyKids HRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .matrix-wrapper {
+      position: relative;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      background: #fff;
+    }
+    .sticky-col-code {
+      position: sticky;
+      left: 0;
+      background: #fff;
+      z-index: 10;
+      border-right: 1px solid var(--color-border);
+      min-width: 80px;
+    }
+    .sticky-col-name {
+      position: sticky;
+      left: 80px;
+      background: #fff;
+      z-index: 10;
+      border-right: 2px solid var(--color-border);
+      min-width: 170px;
+    }
+    th.sticky-col-code, th.sticky-col-name {
+      background: var(--color-surface-muted) !important;
+      z-index: 15;
+    }
+    .cell-x { color: var(--color-accent); font-weight: 700; }
+    .cell-tc { color: var(--color-primary); font-weight: 700; }
+    .cell-leave { color: var(--color-warning); font-weight: 700; }
+    .cell-absent { color: var(--color-danger); font-weight: 700; }
+    .cell-none { color: #CBD5E1; }
+    .day-sunday { background: #FFF1F2 !important; color: #BE123C; }
+    .day-sat { background: #F8FAFC; }
+    .day-today { background: #EFF6FF !important; border-bottom: 2px solid var(--color-primary); }
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR ĐIỀU HƯỚNG -->
+  <aside class="app-sidebar">
+    <div class="brand-header">
+      <div class="brand-logo-icon">
+        <i data-lucide="graduation-cap"></i>
+      </div>
+      <div class="brand-text">
+        <h2>HAPPYKIDS</h2>
+        <p>Quản Lý Nhân Sự & Công</p>
+      </div>
+    </div>
+
+    <div class="sidebar-branch-selector">
+      <label>Cơ Sở Đang Chọn</label>
+      <select id="sidebar-branch-select" class="branch-select-box">
+        <option value="1">Chi nhánh Càng Long</option>
+        <option value="2">Chi nhánh Tân Nhựt</option>
+      </select>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Nghiệp vụ chính</div>
+      <a href="index.html" class="nav-item">
+        <i data-lucide="layout-dashboard"></i>
+        <span>Tổng quan</span>
+      </a>
+      <a href="cham-cong.html" class="nav-item active">
+        <i data-lucide="calendar-check"></i>
+        <span>Chấm công & Điểm danh</span>
+      </a>
+      <a href="nhan-su.html" class="nav-item">
+        <i data-lucide="users"></i>
+        <span>Hồ sơ giáo viên</span>
+      </a>
+      <a href="tinh-luong.html" class="nav-item">
+        <i data-lucide="calculator"></i>
+        <span>Bảng tính lương</span>
+      </a>
+
+      <div class="nav-section-title">Hệ thống</div>
+      <a href="cau-hinh.html" class="nav-item">
+        <i data-lucide="settings"></i>
+        <span>Cấu hình tham số</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <img src="https://ui-avatars.com/api/?name=Admin&background=2563EB&color=fff" alt="User Avatar" class="user-avatar">
+      <div class="user-info">
+        <div class="user-name">Đang tải...</div>
+        <div class="user-role">Quản trị viên</div>
+      </div>
+      <button class="btn-logout" id="btn-logout" title="Đăng xuất">
+        <i data-lucide="log-out"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- NỘI DUNG CHÍNH -->
+  <main class="app-main">
+    <header class="app-header">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="btn-toggle-sidebar" id="btn-toggle-sidebar">
+          <i data-lucide="menu"></i>
+        </button>
+        <div class="header-title-box">
+          <h1 id="page-branch-title">Bảng Chấm Công Chi Tiết Theo Giờ</h1>
+          <p>Nhập giờ vào/ra thực tế, tự động tính phút trễ, số giờ tăng ca và quy đổi số ca dạy 90 phút</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Nút lưu toàn bộ ngày (Màu xanh lá 10%) -->
+        <button class="btn btn-accent" id="btn-save-all-daily">
+          <i data-lucide="save"></i>
+          <span>Lưu Bảng Công Ngày</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <!-- THANH CHỌN CHẾ ĐỘ XEM & BỘ LỌC -->
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-body" style="padding: 16px 20px;">
+          <div class="filter-toolbar" style="margin-bottom: 0;">
+            <!-- CHUYỂN ĐỔI CHẾ ĐỘ: XEM THEO NGÀY (EXCEL FORM) vs MA TRẬN CẢ THÁNG -->
+            <div class="tab-pill-group">
+              <button class="tab-pill active" id="view-mode-daily">
+                <i data-lucide="calendar" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> Bảng Chi Tiết Theo Ngày (Mẫu Excel)
+              </button>
+              <button class="tab-pill" id="view-mode-matrix">
+                <i data-lucide="grid" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i> Bảng Ma Trận Cả Tháng (1 - 31)
+              </button>
+            </div>
+
+            <!-- TAB PHÂN LOẠI LƯƠNG CỨNG / LƯƠNG THEO GIỜ -->
+            <div class="tab-pill-group">
+              <button class="tab-pill active" data-salary-type="FIXED" id="tab-fixed">Lương Cứng</button>
+              <button class="tab-pill" data-salary-type="HOURLY" id="tab-hourly">Lương Theo Giờ</button>
+            </div>
+
+            <!-- CHỌN NGÀY (DÀNH CHO CHẾ ĐỘ XEM THEO NGÀY) -->
+            <div class="filter-group" id="group-filter-daily">
+              <label class="form-label" style="margin-bottom: 0; font-size: 13px;">Chọn ngày:</label>
+              <input type="date" class="form-control" id="input-daily-date" value="2026-10-20" style="width: 150px; padding: 5px 10px;">
+              <button class="btn btn-secondary btn-sm" id="btn-prev-day" title="Ngày trước">◀</button>
+              <button class="btn btn-secondary btn-sm" id="btn-today">Hôm nay</button>
+              <button class="btn btn-secondary btn-sm" id="btn-next-day" title="Ngày sau">▶</button>
+            </div>
+
+            <!-- CHỌN THÁNG/NĂM (DÀNH CHO CHẾ ĐỘ XEM MA TRẬN) -->
+            <div class="filter-group" id="group-filter-matrix" style="display: none;">
+              <select id="select-month" class="form-control" style="width: 110px; padding: 6px 12px;">
+                <option value="1">Tháng 1</option><option value="2">Tháng 2</option><option value="3">Tháng 3</option>
+                <option value="4">Tháng 4</option><option value="5">Tháng 5</option><option value="6">Tháng 6</option>
+                <option value="7">Tháng 7</option><option value="8">Tháng 8</option><option value="9">Tháng 9</option>
+                <option value="10" selected>Tháng 10</option><option value="11">Tháng 11</option><option value="12">Tháng 12</option>
+              </select>
+              <select id="select-year" class="form-control" style="width: 95px; padding: 6px 12px;">
+                <option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 1: BẢNG CHẤM CÔNG CHI TIẾT THEO NGÀY (Y HỆT FORM EXCEL) -->
+      <!-- ================================================================= -->
+      <div id="section-daily-view">
+        <!-- BANNER NGÀY CHUẨN EXCEL -->
+        <div class="daily-banner">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i data-lucide="calendar"></i>
+            <span id="daily-banner-title">📅 NGÀY 20/10/2026 - THỨ BA</span>
+          </div>
+          <div style="font-size: 13px; font-weight: 500; color: #1E40AF;">
+            💡 Nhập giờ vào / ra $\rightarrow$ Hệ thống tự tính toán phút, số ca, đi trễ và tự động lưu
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <!-- BẢNG LƯƠNG CỨNG (CHI TIẾT GIỜ VÀO, GIỜ RA, TRỄ, TĂNG CA, KÝ HIỆU X) -->
+              <table class="table-excel-daily" id="daily-table-fixed">
+                <thead>
+                  <tr>
+                    <th style="width: 45px;">STT</th>
+                    <th style="width: 80px;">Mã GV</th>
+                    <th style="min-width: 170px;" class="text-left">Họ và tên</th>
+                    <th style="min-width: 150px;" class="text-left">Chức vụ / Bộ phận</th>
+                    <th style="min-width: 140px;">Ca quy định (HĐ)</th>
+                    <th style="width: 110px;">Giờ vào (HH:MM)</th>
+                    <th style="width: 110px;">Giờ ra (HH:MM)</th>
+                    <th style="width: 100px;">Thời gian làm</th>
+                    <th style="width: 95px;">Đi trễ (phút)</th>
+                    <th style="width: 95px;">Tăng ca</th>
+                    <th style="width: 105px;">Giờ tăng ca (h)</th>
+                    <th style="width: 95px;">Ký hiệu công</th>
+                    <th style="width: 130px;">Trạng thái xác nhận</th>
+                  </tr>
+                </thead>
+                <tbody id="daily-tbody-fixed">
+                  <tr>
+                    <td colspan="13" style="padding: 40px; color: var(--color-text-secondary);">
+                      Đang nạp dữ liệu chi tiết ngày...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- BẢNG LƯƠNG THEO GIỜ (CHI TIẾT 3 CA SÁNG - CHIỀU - TỐI, TỔNG PHÚT, TỔNG CA, SỐ CA THỰC TẾ) -->
+              <table class="table-excel-daily" id="daily-table-hourly" style="display: none;">
+                <thead>
+                  <tr>
+                    <th style="width: 45px;">STT</th>
+                    <th style="width: 80px;">Mã GV</th>
+                    <th style="min-width: 160px;" class="text-left">Họ và tên</th>
+                    <th style="min-width: 140px;" class="text-left">Chức vụ / Bộ phận</th>
+                    <th style="min-width: 130px;">Ca quy định (HĐ)</th>
+                    <th style="width: 90px;">Ca Sáng Vào</th>
+                    <th style="width: 90px;">Ca Sáng Ra</th>
+                    <th style="width: 75px;">Phút Sáng</th>
+                    <th style="width: 90px;">Ca Chiều Vào</th>
+                    <th style="width: 90px;">Ca Chiều Ra</th>
+                    <th style="width: 75px;">Phút Chiều</th>
+                    <th style="width: 90px;">Ca Tối Vào</th>
+                    <th style="width: 90px;">Ca Tối Ra</th>
+                    <th style="width: 75px;">Phút Tối</th>
+                    <th style="width: 80px;">Tổng phút</th>
+                    <th style="width: 75px;">Tổng ca</th>
+                    <th style="width: 120px;">Trạng thái xác nhận</th>
+                    <th style="min-width: 150px;">Ghi chú ngày</th>
+                    <th style="width: 110px; background: #0E7490 !important; color: #fff !important;">👉 Số ca thực tế</th>
+                  </tr>
+                </thead>
+                <tbody id="daily-tbody-hourly">
+                  <tr>
+                    <td colspan="19" style="padding: 40px; color: var(--color-text-secondary);">
+                      Đang nạp dữ liệu chi tiết ca...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 2: BẢNG MA TRẬN CẢ THÁNG (1 -> 31 NGÀY) -->
+      <!-- ================================================================= -->
+      <div id="section-matrix-view" style="display: none;">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title" id="matrix-title">Ma trận ngày công — Tháng 10/2026</div>
+            <span style="font-size: 12.5px; color: var(--color-text-secondary);">
+              💡 Nhấp vào ô ngày bất kỳ để xem/sửa nhanh
+            </span>
+          </div>
+          <div class="card-body p-0">
+            <div class="matrix-wrapper">
+              <table class="table-clean table-matrix" id="attendance-table">
+                <thead id="matrix-thead"></thead>
+                <tbody id="matrix-tbody">
+                  <tr>
+                    <td colspan="36" style="text-align: center; padding: 40px; color: var(--color-text-secondary);">
+                      Đang nạp dữ liệu ma trận...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cham-cong.js"></script>
+</body>
+</html>

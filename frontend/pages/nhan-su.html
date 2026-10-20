@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hồ Sơ Giáo Viên — HappyKids HRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <aside class="app-sidebar">
+    <div class="brand-header">
+      <div class="brand-logo-icon">
+        <i data-lucide="graduation-cap"></i>
+      </div>
+      <div class="brand-text">
+        <h2>HAPPYKIDS</h2>
+        <p>Quản Lý Nhân Sự & Công</p>
+      </div>
+    </div>
+
+    <div class="sidebar-branch-selector">
+      <label>Cơ Sở Đang Chọn</label>
+      <select id="sidebar-branch-select" class="branch-select-box">
+        <option value="1">Chi nhánh Càng Long</option>
+        <option value="2">Chi nhánh Tân Nhựt</option>
+      </select>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Nghiệp vụ chính</div>
+      <a href="index.html" class="nav-item">
+        <i data-lucide="layout-dashboard"></i>
+        <span>Tổng quan</span>
+      </a>
+      <a href="cham-cong.html" class="nav-item">
+        <i data-lucide="calendar-check"></i>
+        <span>Chấm công ma trận</span>
+      </a>
+      <a href="nhan-su.html" class="nav-item active">
+        <i data-lucide="users"></i>
+        <span>Hồ sơ giáo viên</span>
+      </a>
+      <a href="tinh-luong.html" class="nav-item">
+        <i data-lucide="calculator"></i>
+        <span>Bảng tính lương</span>
+      </a>
+
+      <div class="nav-section-title">Hệ thống</div>
+      <a href="cau-hinh.html" class="nav-item">
+        <i data-lucide="settings"></i>
+        <span>Cấu hình tham số</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <img src="https://ui-avatars.com/api/?name=Admin&background=2563EB&color=fff" alt="User Avatar" class="user-avatar">
+      <div class="user-info">
+        <div class="user-name">Đang tải...</div>
+        <div class="user-role">Quản trị viên</div>
+      </div>
+      <button class="btn-logout" id="btn-logout" title="Đăng xuất">
+        <i data-lucide="log-out"></i>
+      </button>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <header class="app-header">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="btn-toggle-sidebar" id="btn-toggle-sidebar">
+          <i data-lucide="menu"></i>
+        </button>
+        <div class="header-title-box">
+          <h1 id="page-branch-title">Quản Lý Danh Sách Giáo Viên</h1>
+          <p>Thiết lập mức lương, khung giờ hợp đồng và chế độ phụ cấp của từng cơ sở</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Nút Thêm mới (Xanh dương - 30%) -->
+        <button class="btn btn-primary" id="btn-add-employee">
+          <i data-lucide="user-plus"></i>
+          <span>Thêm Giáo Viên Mới</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <div class="card">
+        <div class="card-header">
+          <div class="filter-group" style="flex: 1; max-width: 320px;">
+            <input type="text" id="input-search" class="form-control" placeholder="Tìm theo tên hoặc mã GV...">
+          </div>
+          <div class="tab-pill-group">
+            <button class="tab-pill active" data-type="" id="filter-all">Tất cả</button>
+            <button class="tab-pill" data-type="FIXED" id="filter-fixed">Lương cứng</button>
+            <button class="tab-pill" data-type="HOURLY" id="filter-hourly">Lương theo giờ</button>
+          </div>
+        </div>
+
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table-clean">
+              <thead>
+                <tr>
+                  <th>Mã GV</th>
+                  <th>Họ và Tên</th>
+                  <th>Chức vụ / Bộ phận</th>
+                  <th>SĐT</th>
+                  <th>Hình thức</th>
+                  <th>Mức Lương / Đơn Giá</th>
+                  <th>Phụ Cấp</th>
+                  <th>Khung Giờ HĐ</th>
+                  <th style="text-align: right;">Hành động</th>
+                </tr>
+              </thead>
+              <tbody id="employee-tbody">
+                <tr>
+                  <td colspan="9" style="text-align: center; padding: 40px; color: var(--color-text-secondary);">
+                    Đang nạp danh sách hồ sơ...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL THÊM / SỬA HỒ SƠ GIÁO VIÊN -->
+  <div class="modal-overlay" id="employee-modal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div class="modal-title" id="emp-modal-title">Thêm Hồ Sơ Giáo Viên Mới</div>
+        <button class="modal-close" onclick="closeEmployeeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="employee-form">
+          <input type="hidden" id="emp-form-id">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Mã Giáo Viên (*)</label>
+              <input type="text" class="form-control" id="emp-form-code" placeholder="VD: GV001" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Họ và Tên (*)</label>
+              <input type="text" class="form-control" id="emp-form-name" placeholder="VD: Nguyễn Thị Khánh Vy" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Chức vụ / Bộ phận</label>
+              <input type="text" class="form-control" id="emp-form-position" placeholder="VD: Giáo viên Bán Trú">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Số điện thoại</label>
+              <input type="text" class="form-control" id="emp-form-phone" placeholder="VD: 094948029">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Hình thức tính lương (*)</label>
+              <select class="form-control" id="emp-form-salary-type">
+                <option value="FIXED">Lương Cứng (Toàn thời gian / Bán trú cố định)</option>
+                <option value="HOURLY">Lương Theo Giờ / Theo Ca (90 phút/ca)</option>
+              </select>
+            </div>
+            <div class="form-group" id="group-base-salary">
+              <label class="form-label">Mức lương tháng (VNĐ)</label>
+              <input type="number" class="form-control" id="emp-form-base-salary" placeholder="VD: 7500000">
+            </div>
+            <div class="form-group" id="group-hourly-rate" style="display: none;">
+              <label class="form-label">Đơn giá / ca (VNĐ)</label>
+              <input type="number" class="form-control" id="emp-form-hourly-rate" placeholder="VD: 120000">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Đơn giá tăng ca / ca tối (VNĐ)</label>
+              <input type="number" class="form-control" id="emp-form-ot-rate" value="120000">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Chuyên cần (VNĐ)</label>
+              <input type="number" class="form-control" id="emp-form-att-rate" placeholder="VD: 500000">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phụ cấp Bán Trú (VNĐ)</label>
+              <input type="number" class="form-control" id="emp-form-board-rate" placeholder="VD: 100000/buổi hoặc cố định">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Khung giờ hợp đồng</label>
+              <input type="text" class="form-control" id="emp-form-time-frame" placeholder="VD: 8:00 - 17:30 (9h30)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Số giờ chuẩn / ngày (hoặc ca/buổi)</label>
+              <input type="number" step="0.5" class="form-control" id="emp-form-std-hours" value="8.0">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Giờ vào quy định</label>
+              <input type="time" class="form-control" id="emp-form-time-in">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Giờ ra quy định</label>
+              <input type="time" class="form-control" id="emp-form-time-out">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeEmployeeModal()">Hủy</button>
+        <!-- Nút xác nhận màu xanh lá theo quy tắc 60-30-10 -->
+        <button type="button" class="btn btn-accent" id="btn-save-employee">
+          <i data-lucide="check"></i> Lưu Hồ Sơ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/nhan-su.js"></script>
+</body>
+</html>

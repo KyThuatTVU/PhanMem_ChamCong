@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cấu Hình Hệ Thống — HappyKids HRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <aside class="app-sidebar">
+    <div class="brand-header">
+      <div class="brand-logo-icon">
+        <i data-lucide="graduation-cap"></i>
+      </div>
+      <div class="brand-text">
+        <h2>HAPPYKIDS</h2>
+        <p>Quản Lý Nhân Sự & Công</p>
+      </div>
+    </div>
+
+    <div class="sidebar-branch-selector">
+      <label>Cơ Sở Đang Chọn</label>
+      <select id="sidebar-branch-select" class="branch-select-box">
+        <option value="1">Chi nhánh Càng Long</option>
+        <option value="2">Chi nhánh Tân Nhựt</option>
+      </select>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Nghiệp vụ chính</div>
+      <a href="index.html" class="nav-item">
+        <i data-lucide="layout-dashboard"></i>
+        <span>Tổng quan</span>
+      </a>
+      <a href="cham-cong.html" class="nav-item">
+        <i data-lucide="calendar-check"></i>
+        <span>Chấm công ma trận</span>
+      </a>
+      <a href="nhan-su.html" class="nav-item">
+        <i data-lucide="users"></i>
+        <span>Hồ sơ giáo viên</span>
+      </a>
+      <a href="tinh-luong.html" class="nav-item">
+        <i data-lucide="calculator"></i>
+        <span>Bảng tính lương</span>
+      </a>
+
+      <div class="nav-section-title">Hệ thống</div>
+      <a href="cau-hinh.html" class="nav-item active">
+        <i data-lucide="settings"></i>
+        <span>Cấu hình tham số</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <img src="https://ui-avatars.com/api/?name=Admin&background=2563EB&color=fff" alt="User Avatar" class="user-avatar">
+      <div class="user-info">
+        <div class="user-name">Đang tải...</div>
+        <div class="user-role">Quản trị viên</div>
+      </div>
+      <button class="btn-logout" id="btn-logout" title="Đăng xuất">
+        <i data-lucide="log-out"></i>
+      </button>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <header class="app-header">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="btn-toggle-sidebar" id="btn-toggle-sidebar">
+          <i data-lucide="menu"></i>
+        </button>
+        <div class="header-title-box">
+          <h1 id="page-branch-title">Cấu Hình Tham Số Tính Toán</h1>
+          <p>Thiết lập công chuẩn, thời lượng ca dạy và định mức phụ cấp</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <div class="card" style="max-width: 800px;">
+        <div class="card-header">
+          <div class="card-title">Tham Số Chấm Công & Tính Lương Cơ Sở</div>
+        </div>
+        <div class="card-body">
+          <form id="config-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Số ngày công chuẩn trong tháng (ngày)</label>
+                <input type="number" class="form-control" id="cfg-std-days" value="26" required>
+                <span style="font-size: 11.5px; color: var(--color-text-secondary);">Mặc định 26 ngày công chuẩn (dùng tính lương theo ngày)</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Thời lượng 1 ca chuẩn (phút)</label>
+                <input type="number" class="form-control" id="cfg-slot-mins" value="90" required>
+                <span style="font-size: 11.5px; color: var(--color-text-secondary);">Chuẩn 90 phút = 1 ca dạy chuyên biệt</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Phụ cấp cơm trưa theo ngày công (VNĐ/ngày)</label>
+                <input type="number" class="form-control" id="cfg-lunch-rate" value="25000" required>
+                <span style="font-size: 11.5px; color: var(--color-text-secondary);">Nhân trực tiếp với số ngày công thực tế (X)</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Đơn giá tăng ca mặc định (VNĐ/ca)</label>
+                <input type="number" class="form-control" id="cfg-ot-rate" value="120000" required>
+                <span style="font-size: 11.5px; color: var(--color-text-secondary);">Áp dụng khi giáo viên không có thỏa thuận riêng</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Đơn giá ca chuẩn mặc định (VNĐ/ca)</label>
+                <input type="number" class="form-control" id="cfg-slot-rate" value="120000" required>
+                <span style="font-size: 11.5px; color: var(--color-text-secondary);">Áp dụng cho giáo viên dạy lương theo giờ</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Thời gian làm việc chuẩn 1 ngày mặc định (phút)</label>
+                <input type="number" class="form-control" id="cfg-std-mins" value="480" required>
+                <span style="font-size: 11.5px; color: var(--color-text-secondary);">Chuẩn 8 tiếng (480 phút)</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 24px; border-top: 1px solid var(--color-border); padding-top: 20px; display: flex; justify-content: flex-end;">
+              <!-- Nút xanh lá theo quy tắc 60-30-10 -->
+              <button type="submit" class="btn btn-accent" id="btn-save-cfg">
+                <i data-lucide="check"></i> Lưu Cấu Hình Cơ Sở
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    utils.initIcons();
+
+    let currentBranchId = 1;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await auth.checkSession();
+
+      currentBranchId = utils.getCurrentBranchId();
+      const branchSelect = document.getElementById('sidebar-branch-select');
+      if (branchSelect) {
+        branchSelect.value = currentBranchId;
+        branchSelect.addEventListener('change', (e) => {
+          currentBranchId = parseInt(e.target.value);
+          utils.setCurrentBranchId(currentBranchId);
+          loadConfig();
+        });
+      }
+
+      document.getElementById('btn-logout')?.addEventListener('click', () => auth.logout());
+      document.getElementById('btn-toggle-sidebar')?.addEventListener('click', () => {
+        document.querySelector('.app-sidebar')?.classList.toggle('show');
+      });
+
+      await loadConfig();
+
+      document.getElementById('config-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {
+          branch_id: currentBranchId,
+          standard_work_days: parseInt(document.getElementById('cfg-std-days').value),
+          slot_duration_minutes: parseInt(document.getElementById('cfg-slot-mins').value),
+          lunch_allowance: parseFloat(document.getElementById('cfg-lunch-rate').value),
+          default_ot_rate: parseFloat(document.getElementById('cfg-ot-rate').value),
+          default_slot_rate: parseFloat(document.getElementById('cfg-slot-rate').value),
+          standard_day_minutes: parseInt(document.getElementById('cfg-std-mins').value)
+        };
+
+        const res = await api.post('settings.php', payload);
+        if (res.status === 'success') {
+          utils.showToast('Cập nhật cấu hình thành công!', 'success');
+        } else {
+          utils.showToast(res.message || 'Lỗi lưu cấu hình', 'error');
+        }
+      });
+    });
+
+    async function loadConfig() {
+      const branchName = currentBranchId === 1 ? 'Chi nhánh Càng Long' : 'Chi nhánh Tân Nhựt';
+      document.getElementById('page-branch-title').textContent = `Cấu Hình — ${branchName}`;
+
+      const res = await api.get('settings.php', { branch_id: currentBranchId });
+      if (res.status === 'success' && res.data) {
+        const c = res.data;
+        document.getElementById('cfg-std-days').value = c.standard_work_days || 26;
+        document.getElementById('cfg-slot-mins').value = c.slot_duration_minutes || 90;
+        document.getElementById('cfg-lunch-rate').value = c.lunch_allowance || 25000;
+        document.getElementById('cfg-ot-rate').value = c.default_ot_rate || 120000;
+        document.getElementById('cfg-slot-rate').value = c.default_slot_rate || 120000;
+        document.getElementById('cfg-std-mins').value = c.standard_day_minutes || 480;
+      }
+    }
+  </script>
+</body>
+</html>

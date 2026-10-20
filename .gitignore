@@ -1,0 +1,18 @@
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Runtime and generated files
+node_modules/
+vendor/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local database exports containing operational or personal data
+backend/import_thang10_full.sql
