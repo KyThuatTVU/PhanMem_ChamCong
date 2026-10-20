@@ -117,7 +117,7 @@ CREATE TABLE `daily_attendance` (
     `has_boarding` TINYINT(1) DEFAULT 0 COMMENT 'Trực Bán Trú (BT)',
     `actual_slots` DECIMAL(5,2) DEFAULT 0 COMMENT 'Số ca thực tế / chốt tính lương',
     
-    `confirmation_status` ENUM('Chưa nhập', 'Đã xác nhận') DEFAULT 'Chưa nhập',
+    `confirmation_status` VARCHAR(50) DEFAULT 'Chưa nhập',
     `notes` VARCHAR(255) NULL,
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     UNIQUE KEY `unique_emp_date` (`employee_id`, `work_date`),

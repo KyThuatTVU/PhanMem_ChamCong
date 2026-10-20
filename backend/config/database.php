@@ -8,7 +8,7 @@
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
 define('DB_NAME', getenv('DB_NAME') ?: 'happykids_hrm');
 define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
+define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : 'TVU@842004');
 define('DB_CHARSET', 'utf8mb4');
 
 class Database {
